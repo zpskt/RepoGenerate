@@ -1,0 +1,107 @@
+server:
+    port: 8301
+spring:
+    main:
+        allow-circular-references: true
+    # 应用名称
+    application.name: forum-api
+    profiles:
+        # 启动环境加载，同时加载两个的写法：common,prod  优先级左>右
+#        active: local
+    # 数据源配置
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/dev_forum?serverTimezone=Asia/Shanghai
+        username: root
+        password: zhangpeng
+        hikari:
+            connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
+            minimum-idle: 5
+            maximum-pool-size: 200
+            idle-timeout: 30000
+            connection-timeout: 30000
+            leak-detection-threshold: 300000 # 5分钟
+    jackson:
+        time-zone: Asia/Shanghai
+        date-format: yyyy-MM-dd HH:mm:ss.SSS
+        default-property-inclusion: non_null
+    liquibase:
+        change-log: classpath:db/changelog/sqlData.xml
+        database-change-log-table: database_changelog
+        database-change-log-lock-table: database_changelog_lock
+        enabled: false
+    data:
+      redis:
+          repositories:
+              enabled: false
+    # redis配置
+    redis:
+        # Redis服务器地址
+        host: 127.0.0.1
+        # Redis服务器连接端口
+        port: 6379
+        # Redis数据库索引（默认为0）
+        database: 3
+        # Redis服务器连接密码（默认为空）
+        # password: 7mSx0A0izCeSI2zXy1qzKtdqBFo7
+        # 连接超时时间
+        timeout: 10s
+        lettuce:
+            pool:
+                #连接池最大连接数（使用负数表示没有限制）默认8
+                max-active: 100
+                #连接池最大阻塞等待时间(使用负值表示没有限制)默认-1
+                max-wait: PT10S
+                #连接池最大空闲连接数（使用负值表示没有限制）默认8
+                max-idle: 30
+                #连接池最小空闲连接数（使用负值表示没有限制）默认0
+                min-idle: 1
+# Sa-Token配置
+sa-token:
+    token-name: forum-security
+    # allow-url: *
+    # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+    is-concurrent: true
+    # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+    is-share: true
+    # token-style: random-64
+    token-prefix: Bearer
+    basic: starkitchen:dxFw8MzHOPaIpLSIWrKa3BWU
+    # 关闭Cookie模式
+    is-read-cookie: false
+    is-read-head: true
+    # 是否打开单点注销功能
+    is-slo: true
+    sso:
+        # SSO-Server端 单点登录授权地址
+        auth-url: https://api.security.forum.com/sso/auth
+    # OAuth2.0 配置
+    oauth2:
+        is-code: true
+        is-implicit: true
+        is-password: true
+        is-client: true
+        # is-new-refresh: true
+        access-token-timeout: 86400 # 24小时
+        refresh-token-timeout: 31536000 # 365天
+    # 配置 Sa-Token 单独使用的 Redis 连接
+    alone-redis:
+        # Redis服务器地址
+        host: 127.0.0.1
+        # Redis服务器连接端口
+        port: 6379
+        # Redis数据库索引（默认为0）
+        database: 4
+        # Redis服务器连接密码（默认为空）
+        password:
+        # 连接超时时间
+        timeout: 10s
+# 项目自定义配置
+myconfig:
+    # md5的盐
+    md5-salt: whatclickme
+    # 是否明文存储密码
+    is-pw: true
+    # 是否彩色SQl日志
+    color-sql: true
+    sso-server: https://api.security.forum.com/forum/api
