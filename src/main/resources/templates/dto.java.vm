@@ -1,0 +1,15 @@
+package ${package.Parent}.dto;
+
+/**
+ * <p>
+ * $!{table.comment} dto
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+
+public class  ${entity}DTO{
+
+}
+
